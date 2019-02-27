@@ -9,9 +9,10 @@ headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleW
                          'Chrome/50.0.2661.102 Safari/537.36'}
 ssl._create_default_https_context = ssl._create_unverified_context
 
-listUrl = json.load(open('宋词精选.json'))
+csvFileName = '宋词精选'
+listUrl = json.load(open(csvFileName + '.json'))
 
-csvFile = open('/Users/wangming/文档/shici/宋词精选.csv', 'w', newline='', encoding='utf-8-sig')
+csvFile = open('/Users/wangming/文档/shici/' + csvFileName + '111.csv', 'w', newline='', encoding='utf-8-sig')
 writer = csv.writer(csvFile)
 writer.writerow(['poemName', 'author', 'dynasty', 'verse', 'interpret', 'comment'])
 
@@ -28,20 +29,20 @@ for i in listUrl:
     dynasty = content[content.find('——') + 2:content.find('·')]
     verse = content[0:content.find('——')]
 
-    interpret_txt = soup.find_all('p')[1]
-    comment_txt = soup.find_all('p')[2]
+    interpret_txt = soup.find_all('p')[1].text.replace('\n', '')
+    comment_txt = soup.find_all('p')[2].text.replace('\n', '')
 
-    isFindC = "∨" in comment_txt.text
-    isFindI = "∨" in interpret_txt.text
+    isFindC = "∨" in comment_txt
+    isFindI = "∨" in interpret_txt
     if isFindC:
-        comment = comment_txt.text[2:-9]
+        comment = comment_txt[2:-9]
     else:
-        comment = comment_txt.text[2:]
+        comment = comment_txt[2:]
 
     if isFindI:
-        interpret = interpret_txt.text[2:-9]
+        interpret = interpret_txt[2:-9]
     else:
-        interpret = interpret_txt.text[2:]
+        interpret = interpret_txt[2:]
 
     print("诗名：" + poemName)
     print("作者：" + author)
